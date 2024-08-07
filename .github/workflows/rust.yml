@@ -78,6 +78,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          for asset in artifacts/*; do
-            gh release upload ${GITHUB_REF#refs/tags/} "$asset" --clobber
+          for dir in artifacts/*; do
+            if [ -d "$dir" ]; then
+              asset_name=$(basename "$dir")
+              asset_path=$(find "$dir" -type f)
+              echo "Uploading $asset_path as $asset_name"
+              gh release upload ${GITHUB_REF#refs/tags/} "$asset_path" --clobber --name "$asset_name"
+            fi
           done
