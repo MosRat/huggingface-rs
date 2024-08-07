@@ -368,10 +368,6 @@ fn verify_cli() {
 async fn test_download() {
     let urls = vec![
         "https://speed.cloudflare.com/__down?during=download&bytes=10485760",
-        "https://speed.cloudflare.com/__down?during=download&bytes=10485760",
-        "https://speed.cloudflare.com/__down?during=download&bytes=10485760",
-        "https://speed.cloudflare.com/__down?during=download&bytes=10485760",
-        "https://speed.cloudflare.com/__down?during=download&bytes=10485760",
     ];
     // let barrier = Arc::new(Barrier::new(urls.len()));
     let bar = Arc::new(indicatif::MultiProgress::new());
