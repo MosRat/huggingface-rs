@@ -46,8 +46,15 @@ jobs:
           name: ${{ matrix.asset_name }}
           path: target/release/${{ matrix.artifact_name }}
 
+  create_release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
       - name: Create Release
-        if: startsWith(github.ref, 'refs/tags/')
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -56,15 +63,14 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-        id: create_release
 
-      - name: Upload Release Asset
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-release-asset@v1
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Upload Release Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/release/${{ matrix.artifact_name }}
-          asset_name: ${{ matrix.asset_name }}
-          asset_content_type: application/octet-stream
+        run: |
+          for asset in hfrs-*; do
+            gh release upload ${{ github.ref_name }} $asset
+          done
