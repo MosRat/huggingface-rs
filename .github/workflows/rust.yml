@@ -83,6 +83,6 @@ jobs:
               asset_name=$(basename "$dir")
               asset_path=$(find "$dir" -type f)
               echo "Uploading $asset_path as $asset_name"
-              gh release upload ${GITHUB_REF#refs/tags/} "$asset_path" --clobber  "$asset_name"
+              gh release upload ${GITHUB_REF#refs/tags/} "$asset_path" 
             fi
           done
