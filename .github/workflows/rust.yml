@@ -35,7 +35,13 @@ jobs:
           override: true
 
       - name: Build Release
-        run: cargo build --release --bin ${{ matrix.asset_name }}
+        run: |
+          cargo build --release 
+
+      - name: Rename binary
+        run: |
+          mv target/release/hgrs target/release/${{ matrix.artifact_name }}
+        continue-on-error: true
 
       - name: Run tests
         run: cargo test --verbose
