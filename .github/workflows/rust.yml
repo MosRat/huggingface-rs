@@ -40,7 +40,7 @@ jobs:
 
       - name: Rename binary
         run: |
-          mv target/release/hgrs target/release/${{ matrix.artifact_name }}
+          mv target/release/hfrs target/release/${{ matrix.artifact_name }}
         continue-on-error: true
 
       - name: Run tests
