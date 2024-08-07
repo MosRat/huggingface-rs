@@ -35,7 +35,7 @@ jobs:
           override: true
 
       - name: Build Release
-        run: cargo build --release --verbose
+        run: cargo build --release --bin ${{ matrix.asset_name }}
 
       - name: Run tests
         run: cargo test --verbose
