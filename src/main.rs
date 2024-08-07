@@ -230,7 +230,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let lfs_vec: Vec<_> = lfs.lines().collect();
     let files_count = lfs_vec.len();
-    let bar = Arc::new(indicatif::MultiProgress::new());
+    let bar = Arc::new(indicatif::MultiProgress::with_draw_target(
+        indicatif::ProgressDrawTarget::stderr_with_hz(5)
+    ));
 
     let tasks:Vec<_> = lfs_vec.iter().enumerate().map(|(i, line)| {
         let file_name = line
@@ -262,8 +264,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
     }).collect();
 
-    // join!()
-    // join_all(co_vec).await;
+
     for task in tasks {
         task.await.unwrap();
     }
